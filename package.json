@@ -1,0 +1,25 @@
+{
+  "name": "smart-room-allocation-fullstack",
+  "version": "1.0.0",
+  "description": "Smart Room Allocation — College Classroom & Facility Management System",
+  "main": "backend/server.js",
+  "scripts": {
+    "install:all": "cd backend && npm install",
+    "start": "node backend/server.js",
+    "dev": "node backend/server.js",
+    "test": "cd backend && npm test",
+    "db:seed": "node backend/db.js --seed",
+    "db:reset": "node backend/db.js --reset"
+  },
+  "keywords": [
+    "room-allocation",
+    "classroom-management",
+    "timetable",
+    "smart-campus",
+    "express",
+    "sqlite3",
+    "academic-project"
+  ],
+  "author": "Antigravity Engineering",
+  "license": "MIT"
+}

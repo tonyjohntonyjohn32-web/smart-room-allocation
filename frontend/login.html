@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Smart Room Allocation System</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .login-container {
+      width: 100%;
+      max-width: 440px;
+      background-color: #ffffff;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-xl);
+      overflow: hidden;
+      animation: fadeIn 300ms ease;
+    }
+    .login-header {
+      background-color: #f8fafc;
+      border-bottom: 1px solid var(--color-border);
+      padding: 2rem 2rem 1.5rem;
+      text-align: center;
+    }
+    .login-logo {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 1rem;
+    }
+    .login-header h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--color-text-main);
+    }
+    .login-header p {
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+      margin-top: 0.25rem;
+    }
+    .login-body {
+      padding: 2rem;
+    }
+    .demo-box {
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px dashed var(--color-border);
+    }
+    .demo-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      letter-spacing: 0.05em;
+      margin-bottom: 0.75rem;
+      text-align: center;
+    }
+    .demo-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .demo-btn {
+      flex: 1;
+      padding: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--color-border);
+      background-color: var(--color-bg-subtle);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      text-align: center;
+    }
+    .demo-btn:hover {
+      background-color: #e2e8f0;
+      border-color: #cbd5e1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container"></div>
+
+  <div class="login-container">
+    <div class="login-header">
+      <img src="assets/logo.svg" alt="Apex Logo" class="login-logo">
+      <h1>Smart Room Allocation</h1>
+      <p>College Classroom & Facility Management System</p>
+    </div>
+
+    <div class="login-body">
+      <form id="login-form">
+        <div class="form-group">
+          <label for="email" class="form-label required">College Email Address</label>
+          <input type="email" id="email" class="form-control" placeholder="name@college.edu" required autocomplete="email">
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="form-label required">Account Password</label>
+          <input type="password" id="password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+
+        <button type="submit" id="btn-submit-login" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem; padding: 0.75rem;">
+          Sign In to Portal
+        </button>
+      </form>
+
+      <!-- 1-Click Demo Quick-Fill Section -->
+      <div class="demo-box">
+        <div class="demo-title">Development Demo Credentials</div>
+        <div class="demo-buttons">
+          <button type="button" class="demo-btn" id="demo-admin">
+            <strong>Admin Demo</strong><br>
+            <span style="color: var(--color-text-muted);">Full Permissions</span>
+          </button>
+          <button type="button" class="demo-btn" id="demo-faculty">
+            <strong>Faculty Demo</strong><br>
+            <span style="color: var(--color-text-muted);">View & Timetables</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/ui.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check if user is already authenticated
+      if (Auth.isAuthenticated()) {
+        window.location.href = 'index.html';
+        return;
+      }
+
+      const form = document.getElementById('login-form');
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+      const submitBtn = document.getElementById('btn-submit-login');
+
+      // Demo quick fills
+      document.getElementById('demo-admin').addEventListener('click', () => {
+        emailInput.value = 'admin@college.edu';
+        passwordInput.value = 'Admin@123';
+        UI.showToast('info', 'Admin credentials loaded into form.');
+      });
+
+      document.getElementById('demo-faculty').addEventListener('click', () => {
+        emailInput.value = 'faculty.cs@college.edu';
+        passwordInput.value = 'Faculty@123';
+        UI.showToast('info', 'Faculty credentials loaded into form.');
+      });
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Signing In...';
+
+        try {
+          const res = await API.post('/auth/login', {
+            email: emailInput.value,
+            password: passwordInput.value
+          });
+
+          if (res.success && res.token) {
+            Auth.saveSession(res.token, res.user);
+            UI.showToast('success', `Welcome back, ${res.user.name}!`);
+            setTimeout(() => {
+              window.location.href = 'index.html';
+            }, 600);
+          } else {
+            UI.showToast('error', res.message || 'Login failed. Please check credentials.');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Sign In to Portal';
+          }
+        } catch (err) {
+          UI.showToast('error', err.message || 'Could not connect to server.');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Sign In to Portal';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

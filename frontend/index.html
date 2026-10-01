@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Room Allocation — College Classroom & Facility Management System</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+  <!-- Chart.js for Interactive Dashboard Visualizations -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- Floating Toast Notification System Container -->
+  <div id="toast-container" aria-live="polite"></div>
+
+  <div class="app-container">
+    
+    <!-- Collapsible Navigation Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <img src="assets/logo.svg" alt="Apex Logo" class="sidebar-logo">
+        <div class="sidebar-brand">
+          Smart Room
+          <span>Facility Manager</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button type="button" class="nav-item active" data-view="dashboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          Dashboard
+        </button>
+
+        <button type="button" class="nav-item" data-view="rooms">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 7V3h12v4M9 21v-6h6v6"></path></svg>
+          Rooms Catalog
+        </button>
+
+        <button type="button" class="nav-item" data-view="allocations">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          Room Allocation
+        </button>
+
+        <button type="button" class="nav-item" data-view="timetable">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          Timetable
+        </button>
+
+        <button type="button" class="nav-item" data-view="availability">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          Check Availability
+        </button>
+
+        <button type="button" class="nav-item" data-view="departments">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          Departments
+        </button>
+
+        <button type="button" class="nav-item" data-view="reports">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+          Reports & Analytics
+        </button>
+
+        <button type="button" class="nav-item" data-view="settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2v-.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          Settings
+        </button>
+      </nav>
+
+      <!-- Sidebar User Profile Footer -->
+      <div class="sidebar-footer">
+        <div class="user-snippet">
+          <div class="user-avatar">👤</div>
+          <div class="user-meta">
+            <div class="user-name user-name-display">Loading...</div>
+            <span class="user-role-badge user-role-display">ROLE</span>
+          </div>
+        </div>
+        <button type="button" class="btn-logout" id="btn-logout">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+          Log Out
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="main-wrapper">
+      
+      <!-- Top Sticky Header -->
+      <header class="top-header">
+        <div class="header-left">
+          <button type="button" class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle navigation">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          </button>
+          <div class="breadcrumb">
+            <span>Portal</span>
+            <span>/</span>
+            <span class="breadcrumb-active" id="breadcrumb-current">Dashboard</span>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <div class="header-badge">
+            <span class="pulse-dot"></span>
+            <span>Academic Year 2025-2026</span>
+          </div>
+          <div style="font-size: 0.85rem; font-weight: 600;" class="user-name-display">
+            User
+          </div>
+        </div>
+      </header>
+
+      <!-- Content Views Body -->
+      <main class="content-body">
+
+        <!-- ====================================================================
+             1. DASHBOARD VIEW
+             ==================================================================== -->
+        <section class="view-panel active" id="view-dashboard">
+          <div class="page-title-bar">
+            <div class="page-title-group">
+              <h1>Campus Dashboard</h1>
+              <p>Real-time room occupancy, allocation metrics, and facility utilization.</p>
+            </div>
+            <div class="page-actions">
+              <button type="button" class="btn btn-primary btn-sm" onclick="switchView('allocations')">
+                + New Allocation
+              </button>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="switchView('availability')">
+                Check Availability
+              </button>
+            </div>
+          </div>
+
+          <!-- Active Maintenance Alerts Banner -->
+          <div id="maintenance-alert-banner" style="display: none;"></div>
+
+          <!-- 6 KPI Summary Metric Cards -->
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-info">
+                <h4>Total Rooms</h4>
+                <div class="kpi-value" id="stat-total-rooms">0</div>
+              </div>
+              <div class="kpi-icon kpi-blue">🏛️</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-info">
+                <h4>Available Now</h4>
+                <div class="kpi-value" id="stat-available-rooms" style="color: var(--color-success);">0</div>
+              </div>
+              <div class="kpi-icon kpi-green">✅</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-info">
+                <h4>Occupied Now</h4>
+                <div class="kpi-value" id="stat-occupied-rooms" style="color: var(--color-primary);">0</div>
+              </div>
+              <div class="kpi-icon kpi-cyan">⏱️</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-info">
+                <h4>Total Bookings</h4>
+                <div class="kpi-value" id="stat-total-allocations">0</div>
+              </div>
+              <div class="kpi-icon kpi-purple">📅</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-info">
+                <h4>Departments</h4>
+                <div class="kpi-value" id="stat-total-departments">0</div>
+              </div>
+              <div class="kpi-icon kpi-amber">🏢</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-info">
+                <h4>Room Utilization</h4>
+                <div class="kpi-value" id="stat-utilization-rate">0%</div>
+              </div>
+              <div class="kpi-icon kpi-rose">📊</div>
+            </div>
+          </div>
+
+          <!-- 4 Analytical Charts Grid -->
+          <div class="charts-grid">
+            <div class="card">
+              <div class="card-header">
+                <h3>Live Room Occupancy Distribution</h3>
+              </div>
+              <div class="card-body">
+                <div class="chart-wrapper">
+                  <canvas id="chart-occupancy"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h3>Building Facilities & Allocations</h3>
+              </div>
+              <div class="card-body">
+                <div class="chart-wrapper">
+                  <canvas id="chart-building"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h3>Allocation Share by Department</h3>
+              </div>
+              <div class="card-body">
+                <div class="chart-wrapper">
+                  <canvas id="chart-departments"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h3>Weekly Scheduling Load (Day of Week)</h3>
+              </div>
+              <div class="card-body">
+                <div class="chart-wrapper">
+                  <canvas id="chart-weekly"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Activity & Upcoming Classes -->
+          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem;" class="charts-grid">
+            <div class="card">
+              <div class="card-header">
+                <h3>Recent Allocations</h3>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="switchView('allocations')">View All</button>
+              </div>
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Subject / Course</th>
+                      <th>Room</th>
+                      <th>Faculty</th>
+                      <th>Date</th>
+                      <th>Time Slot</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recent-allocations-tbody">
+                    <tr><td colspan="6" class="empty-state">Loading recent bookings...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h3>Upcoming Classes Today</h3>
+              </div>
+              <div class="card-body" id="upcoming-classes-container">
+                <p class="empty-state">Loading upcoming schedule...</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================================================
+             2. ROOMS CATALOG VIEW
+             ==================================================================== -->
+        <section class="view-panel" id="view-rooms">
+          <div class="page-title-bar">
+            <div class="page-title-group">
+              <h1>Classrooms & Facility Catalog</h1>
+              <p>Manage, inspect, and filter lecture halls, labs, auditoriums, and seminar rooms.</p>
+            </div>
+            <div class="page-actions">
+              <button type="button" class="btn btn-primary btn-sm" data-role="admin" onclick="Rooms.openAddModal()">
+                + Add Room
+              </button>
+            </div>
+          </div>
+
+          <!-- Search & Multi-Criteria Filter Bar -->
+          <div class="filter-bar">
+            <div class="search-input-wrapper">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="rooms-search" class="form-control" placeholder="Search room number, name, or equipment...">
+            </div>
+
+            <select id="rooms-filter-building" class="form-control" style="width: auto; min-width: 160px;">
+              <option value="">All Buildings</option>
+            </select>
+
+            <select id="rooms-filter-type" class="form-control" style="width: auto; min-width: 150px;">
+              <option value="">All Room Types</option>
+              <option value="Classroom">Classroom</option>
+              <option value="Laboratory">Laboratory</option>
+              <option value="Computer Lab">Computer Lab</option>
+              <option value="Seminar Hall">Seminar Hall</option>
+              <option value="Auditorium">Auditorium</option>
+              <option value="Conference Room">Conference Room</option>
+              <option value="Tutorial Room">Tutorial Room</option>
+            </select>
+
+            <select id="rooms-filter-status" class="form-control" style="width: auto; min-width: 140px;">
+              <option value="">All Statuses</option>
+              <option value="available">Available</option>
+              <option value="occupied">Occupied</option>
+              <option value="maintenance">Maintenance</option>
+              <option value="inactive">Inactive</option>
+            </select>
+
+            <div style="display: flex; gap: 0.25rem; margin-left: auto;">
+              <button type="button" id="btn-view-grid" class="btn btn-secondary btn-sm active">Grid</button>
+              <button type="button" id="btn-view-table" class="btn btn-secondary btn-sm">Table</button>
+            </div>
+          </div>
+
+          <!-- Rooms Container (Grid or Table) -->
+          <div id="rooms-container"></div>
+        </section>
+
+        <!-- ====================================================================
+             3. ROOM ALLOCATION VIEW (Manual & Smart Recommendation)
+             ==================================================================== -->
+        <section class="view-panel" id="view-allocations">
+          <div class="page-title-bar">
+            <div class="page-title-group">
+              <h1>Room Allocation & Scheduling</h1>
+              <p>Manual booking and intelligent AI-powered room recommendation engine.</p>
+            </div>
+          </div>
+
+          <!-- Tabs: Manual Booking vs Smart Recommendation -->
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem;">
+            <button type="button" class="btn btn-secondary btn-sm active" id="tab-alloc-manual">
+              Manual Room Booking
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" id="tab-alloc-smart">
+              ✨ Smart Automated Allocation
+            </button>
+          </div>
+
+          <!-- TAB A: Manual Allocation Form (Admin Only for submission) -->
+          <div id="panel-alloc-manual">
+            <div class="card" data-role="admin">
+              <div class="card-header">
+                <h3>New Classroom Allocation</h3>
+              </div>
+              <div class="card-body">
+                <form id="manual-allocation-form">
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="alloc-department" class="form-label required">Department</label>
+                      <select id="alloc-department" class="form-control" required></select>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="alloc-faculty" class="form-label required">Faculty Member</label>
+                      <select id="alloc-faculty" class="form-control" required></select>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="alloc-subject" class="form-label required">Subject / Course Name</label>
+                      <input type="text" id="alloc-subject" class="form-control" placeholder="e.g. CSE-301 Algorithms" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="alloc-group" class="form-label required">Student Group / Section</label>
+                      <input type="text" id="alloc-group" class="form-control" placeholder="e.g. CS-Sec-A" required>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="alloc-date" class="form-label required">Allocation Date</label>
+                      <input type="date" id="alloc-date" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="alloc-start-time" class="form-label required">Start Time (HH:MM)</label>
+                      <input type="time" id="alloc-start-time" class="form-control" value="09:30" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="alloc-end-time" class="form-label required">End Time (HH:MM)</label>
+                      <input type="time" id="alloc-end-time" class="form-control" value="11:00" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="alloc-students" class="form-label required">Expected Students</label>
+                      <input type="number" id="alloc-students" class="form-control" min="1" max="500" value="45" required>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group" style="grid-column: span 2;">
+                      <label for="alloc-room" class="form-label required">Select Room</label>
+                      <select id="alloc-room" class="form-control" required></select>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="alloc-year" class="form-label">Academic Year</label>
+                      <input type="text" id="alloc-year" class="form-control" value="2025-2026">
+                    </div>
+
+                    <div class="form-group">
+                      <label for="alloc-semester" class="form-label">Semester</label>
+                      <input type="text" id="alloc-semester" class="form-control" value="Semester 5">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="alloc-notes" class="form-label">Additional Instructions / Notes</label>
+                    <input type="text" id="alloc-notes" class="form-control" placeholder="Optional notes for lab assistants or projector requirements">
+                  </div>
+
+                  <button type="submit" class="btn btn-primary">
+                    Create Allocation Record
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB B: Smart Automated Recommendation Engine -->
+          <div id="panel-alloc-smart" style="display: none;">
+            <div class="card">
+              <div class="card-header">
+                <h3>Intelligent Room Recommendation</h3>
+              </div>
+              <div class="card-body">
+                <form id="smart-recommendation-form">
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="rec-date" class="form-label required">Required Date</label>
+                      <input type="date" id="rec-date" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="rec-start-time" class="form-label required">Start Time</label>
+                      <input type="time" id="rec-start-time" class="form-control" value="10:00" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="rec-end-time" class="form-label required">End Time</label>
+                      <input type="time" id="rec-end-time" class="form-control" value="11:30" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="rec-students" class="form-label required">Expected Students Count</label>
+                      <input type="number" id="rec-students" class="form-control" min="1" max="500" value="40" required>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="rec-room-type" class="form-label">Preferred Room Type</label>
+                      <select id="rec-room-type" class="form-control">
+                        <option value="">Any Suitable Type</option>
+                        <option value="Classroom">Classroom</option>
+                        <option value="Computer Lab">Computer Lab</option>
+                        <option value="Laboratory">Laboratory</option>
+                        <option value="Seminar Hall">Seminar Hall</option>
+                        <option value="Auditorium">Auditorium</option>
+                        <option value="Tutorial Room">Tutorial Room</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="rec-department" class="form-label">Preferred Department Affiliation</label>
+                      <select id="rec-department" class="form-control"></select>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="form-label">Accessibility</label>
+                      <label class="checkbox-label" style="margin-top: 0.5rem;">
+                        <input type="checkbox" id="rec-accessibility">
+                        Require Wheelchair / Elevator Access
+                      </label>
+                    </div>
+                  </div>
+
+                  <!-- Mandatory Course Booking Info (for 1-click confirmation) -->
+                  <div class="form-row" style="background: var(--color-bg-subtle); padding: 0.75rem; border-radius: var(--radius-sm); margin-bottom: 1rem;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                      <label for="rec-faculty" class="form-label required">Assigning Faculty</label>
+                      <select id="rec-faculty" class="form-control" required></select>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                      <label for="rec-subject" class="form-label required">Subject / Course</label>
+                      <input type="text" id="rec-subject" class="form-control" placeholder="e.g. AI-401 Machine Learning" required>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                      <label for="rec-group" class="form-label required">Student Group</label>
+                      <input type="text" id="rec-group" class="form-control" placeholder="e.g. CS-Final-Year" required>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Required Equipment Features</label>
+                    <div class="checkbox-group">
+                      <label class="checkbox-label"><input type="checkbox" name="rec-equipment" value="Projector"> Projector</label>
+                      <label class="checkbox-label"><input type="checkbox" name="rec-equipment" value="Smart Board"> Smart Board</label>
+                      <label class="checkbox-label"><input type="checkbox" name="rec-equipment" value="Whiteboard"> Whiteboard</label>
+                      <label class="checkbox-label"><input type="checkbox" name="rec-equipment" value="Computers"> Computers</label>
+                      <label class="checkbox-label"><input type="checkbox" name="rec-equipment" value="Air Conditioning"> Air Conditioning</label>
+                      <label class="checkbox-label"><input type="checkbox" name="rec-equipment" value="Audio System"> Audio System</label>
+                      <label class="checkbox-label"><input type="checkbox" name="rec-equipment" value="Wi-Fi"> Wi-Fi</label>
+                    </div>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary">
+                    ⚡ Calculate & Recommend Best Room
+                  </button>
+                </form>
+
+                <!-- Recommendation Results Display Box -->
+                <div id="recommendation-result-container" style="margin-top: 1.5rem;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Existing Allocations Master Table -->
+          <div class="card">
+            <div class="card-header">
+              <h3>All Scheduled Allocations</h3>
+              <div style="display: flex; gap: 0.5rem;">
+                <button type="button" class="btn btn-secondary btn-sm" id="btn-export-alloc-csv" onclick="window.location.href='/api/reports/export?type=allocations'">
+                  Download CSV
+                </button>
+              </div>
+            </div>
+            
+            <div class="filter-bar" style="border: none; border-bottom: 1px solid var(--color-border); border-radius: 0; margin-bottom: 0;">
+              <div class="search-input-wrapper">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="alloc-search" class="form-control" placeholder="Filter by subject, room, faculty, or group...">
+              </div>
+
+              <input type="date" id="alloc-filter-date" class="form-control" style="width: auto;">
+
+              <select id="alloc-filter-status" class="form-control" style="width: auto;">
+                <option value="">All Statuses</option>
+                <option value="confirmed">Confirmed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Subject & Group</th>
+                    <th>Room & Building</th>
+                    <th>Faculty Member</th>
+                    <th>Date & Day</th>
+                    <th>Time Slot</th>
+                    <th>Capacity Load</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="allocations-tbody">
+                  <tr><td colspan="8" class="empty-state">Loading allocation records...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================================================
+             4. TIMETABLE MODULE VIEW
+             ==================================================================== -->
+        <section class="view-panel" id="view-timetable">
+          <div class="page-title-bar">
+            <div class="page-title-group">
+              <h1>Timetable & Class Schedules</h1>
+              <p>Multi-view interactive academic scheduler with collision detection and print view.</p>
+            </div>
+            <div class="page-actions">
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-tt-print">🖨️ Print Timetable</button>
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-tt-export-csv">Download CSV</button>
+            </div>
+          </div>
+
+          <!-- Controls Bar -->
+          <div class="filter-bar">
+            <div style="display: flex; align-items: center; gap: 0.35rem;">
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-tt-prev">‹ Previous</button>
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-tt-today">Current Week</button>
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-tt-next">Next ›</button>
+            </div>
+
+            <input type="date" id="tt-date-picker" class="form-control" style="width: auto;">
+
+            <div style="font-weight: 700; font-size: 0.9rem;" id="tt-range-label">Loading range...</div>
+
+            <div style="display: flex; gap: 0.5rem; margin-left: auto; flex-wrap: wrap;">
+              <select id="tt-view-select" class="form-control" style="width: auto;">
+                <option value="weekly">Weekly View</option>
+                <option value="daily">Daily View</option>
+              </select>
+
+              <select id="tt-filter-room" class="form-control" style="width: auto; min-width: 140px;">
+                <option value="">All Rooms</option>
+              </select>
+
+              <select id="tt-filter-faculty" class="form-control" style="width: auto; min-width: 140px;">
+                <option value="">All Faculty</option>
+              </select>
+
+              <select id="tt-filter-dept" class="form-control" style="width: auto; min-width: 130px;">
+                <option value="">All Depts</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Dynamic Grid Container -->
+          <div id="timetable-grid-container"></div>
+        </section>
+
+        <!-- ====================================================================
+             5. ROOM AVAILABILITY CHECKER VIEW
+             ==================================================================== -->
+        <section class="view-panel" id="view-availability">
+          <div class="page-title-bar">
+            <div class="page-title-group">
+              <h1>Room Availability Search</h1>
+              <p>Instant availability status based on conflict detection algorithms and maintenance records.</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>Search Criteria</h3>
+            </div>
+            <div class="card-body">
+              <form id="availability-check-form">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="avail-date" class="form-label required">Date</label>
+                    <input type="date" id="avail-date" class="form-control" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="avail-start-time" class="form-label required">Start Time</label>
+                    <input type="time" id="avail-start-time" class="form-control" value="09:00" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="avail-end-time" class="form-label required">End Time</label>
+                    <input type="time" id="avail-end-time" class="form-control" value="10:30" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="avail-capacity" class="form-label">Minimum Capacity</label>
+                    <input type="number" id="avail-capacity" class="form-control" placeholder="0" min="0">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="avail-type" class="form-label">Room Type</label>
+                    <select id="avail-type" class="form-control">
+                      <option value="">All Types</option>
+                      <option value="Classroom">Classroom</option>
+                      <option value="Computer Lab">Computer Lab</option>
+                      <option value="Seminar Hall">Seminar Hall</option>
+                      <option value="Auditorium">Auditorium</option>
+                      <option value="Laboratory">Laboratory</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Required Equipment</label>
+                  <div class="checkbox-group">
+                    <label class="checkbox-label"><input type="checkbox" name="avail-equipment" value="Projector"> Projector</label>
+                    <label class="checkbox-label"><input type="checkbox" name="avail-equipment" value="Smart Board"> Smart Board</label>
+                    <label class="checkbox-label"><input type="checkbox" name="avail-equipment" value="Computers"> Computers</label>
+                    <label class="checkbox-label"><input type="checkbox" name="avail-equipment" value="Air Conditioning"> Air Conditioning</label>
+                    <label class="checkbox-label"><input type="checkbox" name="avail-equipment" value="Audio System"> Audio System</label>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                  🔍 Check Availability
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Availability Results Container -->
+          <div id="availability-results"></div>
+        </section>
+
+        <!-- ====================================================================
+             6. DEPARTMENTS MANAGEMENT VIEW
+             ==================================================================== -->
+        <section class="view-panel" id="view-departments">
+          <div class="page-title-bar">
+            <div class="page-title-group">
+              <h1>Departments & Faculties</h1>
+              <p>Academic branches, allocated facilities, and staff counts.</p>
+            </div>
+            <div class="page-actions">
+              <button type="button" class="btn btn-primary btn-sm" data-role="admin" onclick="openAddDeptModal()">
+                + Add Department
+              </button>
+            </div>
+          </div>
+
+          <div id="departments-container"></div>
+        </section>
+
+        <!-- ====================================================================
+             7. REPORTS & EXPORTS VIEW
+             ==================================================================== -->
+        <section class="view-panel" id="view-reports">
+          <div class="page-title-bar">
+            <div class="page-title-group">
+              <h1>Institutional Reports & Export</h1>
+              <p>Comprehensive facility metrics, utilization rates, and audit logs.</p>
+            </div>
+            <div class="page-actions">
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-report-refresh">Refresh</button>
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-report-print">🖨️ Print</button>
+              <button type="button" class="btn btn-primary btn-sm" id="btn-report-export">Download CSV</button>
+            </div>
+          </div>
+
+          <!-- Report Selector Dropdown -->
+          <div class="filter-bar">
+            <label for="report-type-select" style="font-weight: 600; font-size: 0.85rem;">Select Report:</label>
+            <select id="report-type-select" class="form-control" style="width: auto; min-width: 280px;">
+              <option value="room-utilization">1. Room Utilization Report</option>
+              <option value="department-allocations">2. Department-wise Allocation Report</option>
+              <option value="building-utilization">3. Building Utilization Report</option>
+              <option value="unused-rooms">4. Unused Rooms Report</option>
+              <option value="maintenance">5. Facility Maintenance Report</option>
+              <option value="capacity-efficiency">6. Capacity Efficiency & Wastage Report</option>
+            </select>
+          </div>
+
+          <div class="card" id="report-content-container"></div>
+        </section>
+
+        <!-- ====================================================================
+             8. SETTINGS VIEW
+             ==================================================================== -->
+        <section class="view-panel" id="view-settings">
+          <div class="page-title-bar">
+            <div class="page-title-group">
+              <h1>Application Settings & Profile</h1>
+              <p>Configure institution parameters, working hours, and manage security credentials.</p>
+            </div>
+          </div>
+
+          <div class="charts-grid" style="grid-template-columns: 2fr 1fr;">
+            <!-- Institutional Settings (Admin Only) -->
+            <div class="card" data-role="admin">
+              <div class="card-header">
+                <h3>Campus & Academic Parameters</h3>
+              </div>
+              <div class="card-body">
+                <form id="settings-form">
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="setting-name" class="form-label">Institution Name</label>
+                      <input type="text" id="setting-name" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="setting-code" class="form-label">Institution Code</label>
+                      <input type="text" id="setting-code" class="form-control" required>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="setting-year" class="form-label">Academic Year</label>
+                      <input type="text" id="setting-year" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="setting-semester" class="form-label">Current Semester</label>
+                      <input type="text" id="setting-semester" class="form-control" required>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="setting-start" class="form-label">Working Hours Start</label>
+                      <input type="time" id="setting-start" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="setting-end" class="form-label">Working Hours End</label>
+                      <input type="time" id="setting-end" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="setting-duration" class="form-label">Default Slot (Minutes)</label>
+                      <input type="number" id="setting-duration" class="form-control" min="30" max="180" required>
+                    </div>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary">Save Institutional Settings</button>
+                </form>
+              </div>
+            </div>
+
+            <!-- Password Change Form -->
+            <div class="card">
+              <div class="card-header">
+                <h3>Change Account Password</h3>
+              </div>
+              <div class="card-body">
+                <form id="password-change-form">
+                  <div class="form-group">
+                    <label for="pwd-current" class="form-label required">Current Password</label>
+                    <input type="password" id="pwd-current" class="form-control" required autocomplete="current-password">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="pwd-new" class="form-label required">New Password</label>
+                    <input type="password" id="pwd-new" class="form-control" minlength="6" required autocomplete="new-password">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="pwd-confirm" class="form-label required">Confirm New Password</label>
+                    <input type="password" id="pwd-confirm" class="form-control" minlength="6" required autocomplete="new-password">
+                  </div>
+
+                  <button type="submit" class="btn btn-secondary" style="width: 100%;">Update Password</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODALS
+       ==================================================================== -->
+
+  <!-- Add / Edit Room Modal -->
+  <dialog id="modal-room" class="modal">
+    <div class="modal-header">
+      <h3 id="modal-room-title">Add Room</h3>
+      <button type="button" class="btn-close-modal" onclick="UI.closeModal('modal-room')">&times;</button>
+    </div>
+    <form id="room-form">
+      <div class="modal-body">
+        <input type="hidden" id="room-form-id">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="room-form-number" class="form-label required">Room Number</label>
+            <input type="text" id="room-form-number" class="form-control" placeholder="e.g. CR-101" required>
+          </div>
+
+          <div class="form-group">
+            <label for="room-form-name" class="form-label required">Room Name</label>
+            <input type="text" id="room-form-name" class="form-control" placeholder="e.g. Smart Lecture Hall" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="room-form-building" class="form-label required">Building</label>
+            <input type="text" id="room-form-building" class="form-control" placeholder="e.g. Main Academic Block" required>
+          </div>
+
+          <div class="form-group">
+            <label for="room-form-floor" class="form-label required">Floor</label>
+            <input type="number" id="room-form-floor" class="form-control" value="1" min="0" max="20" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="room-form-type" class="form-label required">Room Type</label>
+            <select id="room-form-type" class="form-control" required>
+              <option value="Classroom">Classroom</option>
+              <option value="Laboratory">Laboratory</option>
+              <option value="Computer Lab">Computer Lab</option>
+              <option value="Seminar Hall">Seminar Hall</option>
+              <option value="Auditorium">Auditorium</option>
+              <option value="Conference Room">Conference Room</option>
+              <option value="Tutorial Room">Tutorial Room</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="room-form-capacity" class="form-label required">Seating Capacity</label>
+            <input type="number" id="room-form-capacity" class="form-control" min="1" max="1000" value="50" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="room-form-department" class="form-label">Department Affiliation</label>
+            <select id="room-form-department" class="form-control"></select>
+          </div>
+
+          <div class="form-group">
+            <label for="room-form-status" class="form-label">Status</label>
+            <select id="room-form-status" class="form-control">
+              <option value="available">Available</option>
+              <option value="maintenance">Maintenance</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="room-form-accessibility" class="form-label">Accessibility Features</label>
+          <input type="text" id="room-form-accessibility" class="form-control" value="Wheelchair Accessible" placeholder="e.g. Wheelchair Accessible, Elevator Access">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Equipment Available</label>
+          <div class="checkbox-group">
+            <label class="checkbox-label"><input type="checkbox" name="room-equipment" value="Projector"> Projector</label>
+            <label class="checkbox-label"><input type="checkbox" name="room-equipment" value="Smart Board"> Smart Board</label>
+            <label class="checkbox-label"><input type="checkbox" name="room-equipment" value="Whiteboard"> Whiteboard</label>
+            <label class="checkbox-label"><input type="checkbox" name="room-equipment" value="Computers"> Computers</label>
+            <label class="checkbox-label"><input type="checkbox" name="room-equipment" value="Air Conditioning"> Air Conditioning</label>
+            <label class="checkbox-label"><input type="checkbox" name="room-equipment" value="Audio System"> Audio System</label>
+            <label class="checkbox-label"><input type="checkbox" name="room-equipment" value="Wi-Fi"> Wi-Fi</label>
+            <label class="checkbox-label"><input type="checkbox" name="room-equipment" value="Laboratory Equipment"> Laboratory Equipment</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="room-form-description" class="form-label">Description</label>
+          <textarea id="room-form-description" class="form-control" rows="2" placeholder="Facility description or acoustic properties"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="UI.closeModal('modal-room')">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-sm">Save Room</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Room Details Modal -->
+  <dialog id="modal-room-details" class="modal">
+    <div class="modal-header">
+      <h3>Room Details & Schedule</h3>
+      <button type="button" class="btn-close-modal" onclick="UI.closeModal('modal-room-details')">&times;</button>
+    </div>
+    <div class="modal-body" id="room-details-body"></div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary btn-sm" onclick="UI.closeModal('modal-room-details')">Close</button>
+    </div>
+  </dialog>
+
+  <!-- Add / Edit Department Modal -->
+  <dialog id="modal-dept" class="modal">
+    <div class="modal-header">
+      <h3 id="modal-dept-title">Add Department</h3>
+      <button type="button" class="btn-close-modal" onclick="UI.closeModal('modal-dept')">&times;</button>
+    </div>
+    <form id="dept-form">
+      <div class="modal-body">
+        <input type="hidden" id="dept-form-id">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="dept-form-code" class="form-label required">Department Code</label>
+            <input type="text" id="dept-form-code" class="form-control" placeholder="e.g. CSE" required>
+          </div>
+          <div class="form-group">
+            <label for="dept-form-name" class="form-label required">Department Name</label>
+            <input type="text" id="dept-form-name" class="form-control" placeholder="e.g. Computer Science" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="dept-form-head" class="form-label">Head of Department</label>
+            <input type="text" id="dept-form-head" class="form-control" placeholder="e.g. Dr. Alan Turing">
+          </div>
+          <div class="form-group">
+            <label for="dept-form-email" class="form-label">Contact Email</label>
+            <input type="email" id="dept-form-email" class="form-control" placeholder="cse@college.edu">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="dept-form-phone" class="form-label">Contact Phone</label>
+          <input type="text" id="dept-form-phone" class="form-control" placeholder="+1-555-0100">
+        </div>
+
+        <div class="form-group">
+          <label for="dept-form-desc" class="form-label">Description</label>
+          <textarea id="dept-form-desc" class="form-control" rows="2"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="UI.closeModal('modal-dept')">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-sm">Save Department</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Class Details Modal -->
+  <dialog id="modal-class-details" class="modal">
+    <div class="modal-header">
+      <h3>Class Schedule Details</h3>
+      <button type="button" class="btn-close-modal" onclick="UI.closeModal('modal-class-details')">&times;</button>
+    </div>
+    <div class="modal-body" id="class-details-body"></div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary btn-sm" onclick="UI.closeModal('modal-class-details')">Close</button>
+    </div>
+  </dialog>
+
+  <!-- Modular Scripts -->
+  <script src="js/ui.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/rooms.js"></script>
+  <script src="js/allocations.js"></script>
+  <script src="js/timetable.js"></script>
+  <script src="js/reports.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
